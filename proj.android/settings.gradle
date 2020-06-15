@@ -1,0 +1,4 @@
+include ':libcocos2dx'
+project(':libcocos2dx').projectDir = new File(settingsDir, '../cocos2d/cocos/platform/android/libcocos2dx')
+include ':zego-express-example-cocos2dx-quick-start'
+project(':zego-express-example-cocos2dx-quick-start').projectDir = new File(settingsDir, 'app')
