@@ -24,12 +24,7 @@
 
 #include "HelloWorldScene.h"
 
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//#include <libyuv.h>
-//#endif
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//#include "ZegoExpressSDK.h"
 #include "platform/android/jni/JniHelper.h"
 #endif
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,"test",__VA_ARGS__)
@@ -38,8 +33,9 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace ZEGO::EXPRESS;
 //Go to ZEGO Management Console and apply for appID and appSign
-unsigned int APPID = 123456;
-std::string APPSIGN = "xxxxxxx";
+//Developer must fill in the appID and appSign that they have applied for, otherwise the compilation will not pass
+unsigned int APPID = ;
+std::string APPSIGN = ;
 
 Scene* HelloWorld::createScene()
 {
@@ -273,18 +269,18 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
+
 PixelFormat getPixelFormat(ZegoVideoFrameParam param){
-    PixelFormat result =PixelFormat::BGRA8888;
-    if(param.format == ZEGO_VIDEO_FRAME_FORMAT_BGRA32||param.format==ZEGO_VIDEO_FRAME_FORMAT_ARGB32){
-        result=PixelFormat::BGRA8888;
-    }else if (param.format==ZEGO_VIDEO_FRAME_FORMAT_RGBA32||param.format==ZEGO_VIDEO_FRAME_FORMAT_ABGR32){
-        result=PixelFormat::RGBA8888;
+    PixelFormat result = PixelFormat::BGRA8888;
+    if(param.format == ZEGO_VIDEO_FRAME_FORMAT_BGRA32 || param.format == ZEGO_VIDEO_FRAME_FORMAT_ARGB32) {
+        result = PixelFormat::BGRA8888;
+    }else if (param.format == ZEGO_VIDEO_FRAME_FORMAT_RGBA32 || param.format == ZEGO_VIDEO_FRAME_FORMAT_ABGR32) {
+        result = PixelFormat::RGBA8888;
     }
     return result;
 }
+
 void HelloWorld::onCapturedVideoFrameRawData(const unsigned char* data, unsigned int dataLength, ZegoVideoFrameParam param, ZegoVideoFlipMode flipMode)
 {
     if(dataLength != m_preview_frame_len)
@@ -298,11 +294,8 @@ void HelloWorld::onCapturedVideoFrameRawData(const unsigned char* data, unsigned
         m_preview_frame_len = dataLength;
     }
     
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//    libyuv::ABGRToARGB(data, param.strides[0], m_preview_frame, param.strides[0], param.width, param.height);
-//#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     memcpy(m_preview_frame, data, dataLength);
-//#endif
+
     Director::getInstance()->getScheduler()->performFunctionInCocosThread([dataLength, param, this](){
         if(m_preview_tex == nullptr)
         {
@@ -336,11 +329,7 @@ void HelloWorld::onRemoteVideoFrameRawData(const unsigned char* data, unsigned i
         m_player_frame_len = dataLength;
     }
     
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//    libyuv::ABGRToARGB(data, param.strides[0], m_player_frame, param.strides[0], param.width, param.height);
-//#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     memcpy(m_player_frame, data, dataLength);
-//#endif
 
     Director::getInstance()->getScheduler()->performFunctionInCocosThread([dataLength, param, this](){
         if(m_player_tex == nullptr)
@@ -362,6 +351,3 @@ void HelloWorld::onRemoteVideoFrameRawData(const unsigned char* data, unsigned i
         }
     });
 }
-
-
-
