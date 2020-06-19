@@ -72,8 +72,8 @@ if(ANDROID)
     list(APPEND GAME_SOURCE
          proj.android/app/jni/hellocpp/main.cpp
          )
-    include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/Android/zegoexpressengine/include)
-    link_directories(${CMAKE_CURRENT_LIST_DIR}/libs/Android/zegoexpressengine/${ANDROID_ABI})
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/Android/include)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/libs/Android/${ANDROID_ABI})
 
 elseif(LINUX)
     list(APPEND GAME_SOURCE
