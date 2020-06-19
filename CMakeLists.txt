@@ -90,8 +90,8 @@ elseif(WINDOWS)
          ${common_res_files}
          )
 elseif(APPLE)
-    include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/iOS/ZegoExpressEngine.framework/Headers)
-    link_directories(${CMAKE_CURRENT_LIST_DIR}/libs/iOS/)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/iOS/armv7-arm64-x86_64/ZegoExpressEngine.framework/Headers)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/libs/iOS/armv7-arm64-x86_64/)
     if(IOS)
         list(APPEND GAME_HEADER
              proj.ios_mac/ios/AppController.h
@@ -140,7 +140,7 @@ endif()
 if(ANDROID)
     target_link_libraries(${APP_NAME} cocos2d ZegoExpressEngine)
 elseif(APPLE)
-    target_link_libraries(${APP_NAME} cocos2d ${CMAKE_CURRENT_LIST_DIR}/libs/iOS/ZegoExpressEngine.framework)
+    target_link_libraries(${APP_NAME} cocos2d ${CMAKE_CURRENT_LIST_DIR}/libs/iOS/armv7-arm64-x86_64/ZegoExpressEngine.framework)
 endif()        
 target_include_directories(${APP_NAME}
         PRIVATE Classes

@@ -60,14 +60,6 @@ bool HelloWorld::init()
     }
     
     // 开启自定义渲染，SDK将抛出原始视频数据帧
-    ZegoEngineConfig config;
-    ZegoCustomVideoRenderConfig rconfig;
-    rconfig.bufferType = ZEGO_VIDEO_BUFFER_TYPE_RAW_DATA;
-    rconfig.frameFormatSeries = ZEGO_VIDEO_FRAME_FORMAT_SERIES_RGB;
-    rconfig.enableEngineRender = false;
-    
-    config.customVideoRenderConfig = &rconfig;
-    ZegoExpressSDK::setEngineConfig(config);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -155,8 +147,13 @@ bool HelloWorld::init()
 
 #endif
 
-            ZegoExpressSDK::createEngine(APPID, APPSIGN, true, ZEGO_SCENARIO_COMMUNICATION, m_handler);
+            auto engine = ZegoExpressSDK::createEngine(APPID, APPSIGN, true, ZEGO_SCENARIO_COMMUNICATION, m_handler);
             createEngineButton->setTitleText("反初始化");
+            ZegoCustomVideoRenderConfig rconfig;
+            rconfig.bufferType = ZEGO_VIDEO_BUFFER_TYPE_RAW_DATA;
+            rconfig.frameFormatSeries = ZEGO_VIDEO_FRAME_FORMAT_SERIES_RGB;
+            rconfig.enableEngineRender = false;
+            engine->enableCustomVideoRender(true, &rconfig);
         } else {
             auto engine = ZegoExpressSDK::getEngine();
             ZegoExpressSDK::destroyEngine(engine, nullptr);
@@ -207,12 +204,15 @@ bool HelloWorld::init()
 #endif
             m_handler->setPreviewDataCallback(std::bind(&HelloWorld::onCapturedVideoFrameRawData, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
             m_handler->setPlayerDataCallback(std::bind(&HelloWorld::onRemoteVideoFrameRawData, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+            
             engine->setCustomVideoRenderHandler(m_handler);
 
             ZegoVideoConfig vconfig;
 
             engine->setVideoConfig(vconfig);
             engine->setAppOrientation(ZEGO_ORIENTATION_90);
+
+
 
             engine->startPreview(nullptr);
             engine->startPublishingStream("cocos-stream-777");
